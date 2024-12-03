@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raqamni Toping</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+            margin-top: 50px;
+        }
+
+        .game-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-field {
+            margin: 20px 0;
+        }
+
+        .input-field input {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+
+        .input-field input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #555;
+        }
+
+        .restart-btn {
+            margin-top: 20px;
+            background-color: #28a745;
+        }
+
+        .restart-btn:hover {
+            background-color: #218838;
+        }
+
+        .error {
+            animation: shake 0.3s;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+
+            75% {
+                transform: translateX(-5px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Raqamni Toping!</h1>
+    <div class="game-container">
+        <p>1 dan 100 gacha bo'lgan yashirin raqamni toping!</p>
+        <div class="input-field">
+            <input type="number" id="guess-input" placeholder="Raqam kiriting">
+        </div>
+        <button class="btn" id="check-btn">Top</button>
+        <div class="message" id="message"></div>
+        <button class="btn restart-btn" id="restart-btn">Qayta O'ynash</button>
+    </div>
+
+    <script>
+        const guessInput = document.getElementById('guess-input');
+        const checkBtn = document.getElementById('check-btn');
+        const message = document.getElementById('message');
+        const restartBtn = document.getElementById('restart-btn');
+
+        let secretNumber = Math.floor(Math.random() * 100) + 1;
+        let attempts = 0;
+
+        checkBtn.addEventListener('click', () => {
+            const userGuess = parseInt(guessInput.value);
+            attempts++;
+
+            if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
+                message.textContent = "Iltimos, 1 dan 100 gacha bo'lgan sonni kiriting!";
+                message.style.color = 'red';
+                guessInput.classList.add('error');
+                setTimeout(() => guessInput.classList.remove('error'), 300);
+                return;
+            }
+
+            if (userGuess === secretNumber) {
+                message.textContent = `Tabriklaymiz! Siz ${attempts} urinishda topdingiz!`;
+                message.style.color = 'green';
+            } else if (userGuess < secretNumber) {
+                message.textContent = "Yuqoriroq!";
+                message.style.color = 'orange';
+            } else {
+                message.textContent = "Pastroq!";
+                message.style.color = 'orange';
+            }
+        });
+
+        restartBtn.addEventListener('click', () => {
+            secretNumber = Math.floor(Math.random() * 100) + 1;
+            attempts = 0;
+            guessInput.value = '';
+            message.textContent = '';
+        });
+    </script>
+</body>
+
+</html>
